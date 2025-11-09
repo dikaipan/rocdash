@@ -729,17 +729,17 @@ export default function Dashboard() {
    * OPTIMIZED: Limit data points to improve chart rendering performance
    */
   const monthlyActivationData = useMemo(() => {
-    if (!rows || rows.length === 0) {
+    if (!machines || machines.length === 0) {
       console.log("[DEBUG] No machine data for monthly activation");
       return [];
     }
     
-    console.log("[DEBUG] Calculating monthly activations from", rows.length, "machines");
+    console.log("[DEBUG] Calculating monthly activations from", machines.length, "machines");
     
     // Group machines by month-year from instal_date
     const monthlyGroups = {};
     
-    rows.forEach(machine => {
+    machines.forEach(machine => {
       const instalDate = machine.instal_date || machine.install_date || machine.instalDate;
       if (!instalDate) return;
       
@@ -796,7 +796,7 @@ export default function Dashboard() {
     
     // Return last 36 months (3 years) for performance
     return rawData.slice(-36);
-  }, [rows]);
+  }, [machines]);
   
   /**
    * formatPercentage - Format percentage number to readable string
