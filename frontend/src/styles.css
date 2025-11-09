@@ -942,12 +942,8 @@ div[style*="z-index: 50"] {
     left:0; 
     top:0; 
     height:100vh; 
-    max-height: 100vh;
-    z-index:40; 
-    transform: translateX(0); 
-    transition: transform .25s;
-    border-radius: 0;
-    padding: 20px 16px;
+    z-index:1000; 
+    background: var(--bg-1); 
   }
   .app-root{ padding-left:220px }
   .main-area{ padding:20px; }
@@ -1180,6 +1176,59 @@ div[style*="z-index: 50"] {
   .sidebar-toggle-btn{
     width: 28px;
     height: 28px;
+  }
+  
+  /* Extra small mobile - Further reduce card sizes */
+  .panels-grid {
+    gap: 8px !important;
+  }
+  
+  .kpi-card-large,
+  .card-wide,
+  .card-small {
+    padding: 0.75rem !important;
+    min-height: auto !important;
+  }
+  
+  .kpi-value-large {
+    font-size: 1.5rem !important;
+  }
+  
+  .kpi-title-large {
+    font-size: 0.7rem !important;
+  }
+  
+  .h-underline {
+    font-size: 0.875rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .main-area {
+    padding: 8px !important;
+  }
+  
+  button:not(.sidebar-toggle-btn):not(.nav-btn) {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  input, select, textarea {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  /* Smaller charts on very small screens */
+  .recharts-responsive-container {
+    min-height: 200px !important;
+  }
+  
+  /* Compact table on small screens */
+  table {
+    font-size: 0.75rem !important;
+  }
+  
+  th, td {
+    padding: 4px !important;
   }
 }
 
