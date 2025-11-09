@@ -120,6 +120,33 @@ def handler(event, context):
                 'body': json.dumps(fsl_data)
             }
             
+        # Monthly machines endpoint
+        elif '/monthly-machines' in path:
+            monthly_data = []
+            try:
+                csv_path = os.path.join(os.path.dirname(__file__), 'data', 'data_mesin_perbulan.csv')
+                if os.path.exists(csv_path):
+                    with open(csv_path, 'r', encoding='utf-8') as file:
+                        reader = csv.DictReader(file)
+                        monthly_data = list(reader)
+                        for item in monthly_data:
+                            for key, value in item.items():
+                                if value == '':
+                                    item[key] = None
+            except Exception as e:
+                print(f"CSV read error: {e}")
+                return {
+                    'statusCode': 500,
+                    'headers': {'Content-Type': 'application/json'},
+                    'body': json.dumps({'error': f'Failed to read monthly data: {str(e)}'})
+                }
+            
+            return {
+                'statusCode': 200,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps(monthly_data)
+            }
+            
         else:
             return {
                 'statusCode': 200,
@@ -131,7 +158,8 @@ def handler(event, context):
                         '/api/machines',
                         '/api/engineers', 
                         '/api/stock-parts',
-                        '/api/fsl-locations'
+                        '/api/fsl-locations',
+                        '/api/monthly-machines'
                     ]
                 })
             }
