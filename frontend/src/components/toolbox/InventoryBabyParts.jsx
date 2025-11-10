@@ -5,6 +5,7 @@ import { useConfirm } from '../../hooks/useConfirm';
 import { useCrud } from '../../hooks/useCrud';
 import CustomConfirm from '../common/CustomConfirm';
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../../utils/apiConfig';
 
 const InventoryBabyParts = () => {
   const { isDark } = useTheme();
@@ -31,7 +32,7 @@ const InventoryBabyParts = () => {
 
   // CRUD hook
   const crud = useCrud({
-    endpoint: '/api/baby-parts',
+    endpoint: `${API_BASE_URL}/baby-parts`,
     primaryKey: 'baby_parts',
     eventName: 'babyPartDataChanged'
   });
@@ -47,7 +48,7 @@ const InventoryBabyParts = () => {
       fetchInProgressRef.current = true;
       try {
         if (isMountedRef.current) setLoading(true);
-        const response = await fetch('/api/baby-parts');
+        const response = await fetch(`${API_BASE_URL}/baby-parts`);
         if (!isMountedRef.current) {
           fetchInProgressRef.current = false;
           return;

@@ -5,6 +5,7 @@ import { useConfirm } from '../../hooks/useConfirm';
 import { useCrud } from '../../hooks/useCrud';
 import CustomConfirm from '../common/CustomConfirm';
 import toast from 'react-hot-toast';
+import { API_BASE_URL } from '../../utils/apiConfig';
 
 const InventoryTools = () => {
   const { isDark } = useTheme();
@@ -41,7 +42,7 @@ const InventoryTools = () => {
 
   // CRUD hook
   const crud = useCrud({
-    endpoint: '/api/tools',
+    endpoint: `${API_BASE_URL}/tools`,
     primaryKey: 'tools_name',
     eventName: 'toolDataChanged'
   });
@@ -57,7 +58,7 @@ const InventoryTools = () => {
       fetchInProgressRef.current = true;
       try {
         if (isMountedRef.current) setLoading(true);
-        const response = await fetch('/api/tools');
+        const response = await fetch(`${API_BASE_URL}/tools`);
         if (!isMountedRef.current) {
           fetchInProgressRef.current = false;
           return;
@@ -177,7 +178,7 @@ const InventoryTools = () => {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('/api/upload-photo', {
+      const response = await fetch(`${API_BASE_URL}/upload-photo`, {
         method: 'POST',
         body: formData,
       });
