@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build",
+  "buildCommand": "cd frontend && npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "cd frontend && npm install",
+  "installCommand": "cd frontend && npm install && node scripts/fix-build-vite.js",
   "framework": null,
   "cleanUrls": false,
   "trailingSlash": false,

@@ -7,7 +7,7 @@
     "dev": "vite",
     "clean": "node scripts/clean-dist.js",
     "prebuild": "node scripts/fix-build-vite.js && node scripts/clean-dist.js",
-    "build": "vite build",
+    "build": "cross-env NODE_ENV=production vite build",
     "build:rolldown": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
