@@ -1,5 +1,0 @@
-# Don't redirect API JSON files - serve them as-is
-/api/*  /api/:splat  200
-
-# SPA fallback for everything else
-/*  /index.html  200
