@@ -33,6 +33,14 @@
   ],
   "rewrites": [
     {
+      "source": "/api/tools",
+      "destination": "/api/tools.json"
+    },
+    {
+      "source": "/api/baby-parts",
+      "destination": "/api/baby-parts.json"
+    },
+    {
       "source": "/api/machines",
       "destination": "/api/machines.json"
     },
@@ -53,15 +61,7 @@
       "destination": "/api/monthly-machines.json"
     },
     {
-      "source": "/api/tools",
-      "destination": "/api/tools.json"
-    },
-    {
-      "source": "/api/baby-parts",
-      "destination": "/api/baby-parts.json"
-    },
-    {
-      "source": "/((?!api|assets|_next|favicon\\.ico|.*\\.(js|mjs|css|json|png|jpg|jpeg|svg|ico|woff|woff2|ttf|eot)).*)",
+      "source": "/((?!api/|assets/|_next/|favicon\\.ico|.*\\.(js|mjs|css|json|png|jpg|jpeg|svg|ico|woff|woff2|ttf|eot)).*)",
       "destination": "/index.html"
     }
   ]
