@@ -383,14 +383,30 @@ export default function Engineers() {
       formData.append('file', file);
       formData.append('target', 'engineers');
 
-      const response = await fetch('/api/upload', {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to upload CSV');
+        let errorMessage = 'Failed to upload CSV';
+        try {
+          const contentType = response.headers.get('Content-Type') || '';
+          if (contentType.includes('application/json')) {
+            const errorData = await response.json();
+            if (errorData && (errorData.error || errorData.message)) {
+              errorMessage = errorData.error || errorData.message;
+            }
+          }
+        } catch (e) {
+          // Ignore JSON parse errors and fall back to generic message
+        }
+
+        if (response.status) {
+          errorMessage = `${errorMessage} (status ${response.status})`;
+        }
+
+        throw new Error(errorMessage);
       }
 
       alert.success('CSV uploaded successfully!', 'Upload Berhasil');

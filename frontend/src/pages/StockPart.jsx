@@ -94,6 +94,7 @@ const getColorByRegion = (region) => regionColors[region] || '#94a3b8';
 // Style system
 import { getGradientCard, getKPICard, TEXT_STYLES, BUTTON_STYLES, ALERT_STYLES, CARD_STYLES, cn } from '../constants/styles';
 import { useTheme } from '../contexts/ThemeContext';
+import { API_BASE_URL } from "../utils/apiConfig.js";
 
 // ============================================================================
 // SECTION 2: CONSTANTS - Konfigurasi aplikasi
@@ -199,7 +200,7 @@ export default function StockPart() {
   }, [fslLocations]);
   
   const { create, update, remove, loading: crudLoading } = useCrud({
-    endpoint: '/api/stock-parts',
+    endpoint: `${API_BASE_URL}/stock-parts`,
     primaryKey: 'part_number',
     eventName: 'stockPartDataChanged'
   });
@@ -632,14 +633,30 @@ const handleDelete = (part) => {
       formData.append('file', file);
       formData.append('target', 'stock-parts');
 
-      const response = await fetch('/api/upload', {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to upload CSV');
+        let errorMessage = 'Failed to upload CSV';
+        try {
+          const contentType = response.headers.get('Content-Type') || '';
+          if (contentType.includes('application/json')) {
+            const errorData = await response.json();
+            if (errorData && (errorData.error || errorData.message)) {
+              errorMessage = errorData.error || errorData.message;
+            }
+          }
+        } catch (e) {
+          // Ignore JSON parse errors and fall back to generic message
+        }
+
+        if (response.status) {
+          errorMessage = `${errorMessage} (status ${response.status})`;
+        }
+
+        throw new Error(errorMessage);
       }
 
       toast.success('CSV berhasil diupload!', {

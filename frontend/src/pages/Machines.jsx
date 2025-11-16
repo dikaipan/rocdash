@@ -25,12 +25,13 @@ import { getKPICard, TEXT_STYLES, BUTTON_STYLES, cn } from '../constants/styles'
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import InlineLoadingSpinner from '../components/common/InlineLoadingSpinner';
 import { useTheme } from '../contexts/ThemeContext';
+import { API_BASE_URL } from "../utils/apiConfig.js";
 
 export default function Machines() {
   const { isDark } = useTheme();
   const { rows: machines, loading } = useMachineData();
   const { create, update, remove, bulkDelete, loading: crudLoading } = useCrud({
-    endpoint: '/api/machines',
+    endpoint: `${API_BASE_URL}/machines`,
     primaryKey: 'wsid',
     eventName: 'machineDataChanged'
   });
@@ -754,14 +755,30 @@ export default function Machines() {
       formData.append('file', file);
       formData.append('target', 'machines');
 
-      const response = await fetch('/api/upload', {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
         method: 'POST',
         body: formData
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to upload CSV');
+        let errorMessage = 'Failed to upload CSV';
+        try {
+          const contentType = response.headers.get('Content-Type') || '';
+          if (contentType.includes('application/json')) {
+            const errorData = await response.json();
+            if (errorData && (errorData.error || errorData.message)) {
+              errorMessage = errorData.error || errorData.message;
+            }
+          }
+        } catch (e) {
+          // Ignore JSON parse errors and fall back to generic message
+        }
+
+        if (response.status) {
+          errorMessage = `${errorMessage} (status ${response.status})`;
+        }
+
+        throw new Error(errorMessage);
       }
 
       alert.success('CSV uploaded successfully!', 'Upload Berhasil');
