@@ -94,7 +94,7 @@ const parseMachinesCSV = (csvText) => {
  * Uses generic useDataFetch hook
  */
 export function useEngineerData() {
-  const { data, loading, error } = useDataFetch('/api/engineers', {
+  const { data, loading, error } = useDataFetch('/engineers', {
     eventName: 'engineerDataChanged',
   });
 
@@ -110,7 +110,7 @@ export function useEngineerData() {
  * Uses generic useDataFetch hook
  */
 export function useMachineData() {
-  const { data, loading, error } = useDataFetch('/api/machines', {
+  const { data, loading, error } = useDataFetch('/machines', {
     eventName: 'machineDataChanged',
   });
 
@@ -126,7 +126,7 @@ export function useMachineData() {
  * Uses generic useDataFetch hook
  */
 export function useStockPartData() {
-  const { data, loading, error } = useDataFetch('/api/stock-parts', {
+  const { data, loading, error } = useDataFetch('/stock-parts', {
     eventName: 'stockPartDataChanged',
   });
 
@@ -142,7 +142,7 @@ export function useStockPartData() {
  * Uses generic useDataFetch hook
  */
 export function useFSLLocationData() {
-  const { data, loading, error } = useDataFetch('/api/fsl-locations');
+  const { data, loading, error } = useDataFetch('/fsl-locations');
 
   return { 
     rows: data, 
@@ -156,7 +156,7 @@ export function useFSLLocationData() {
  * Uses generic useDataFetch hook
  */
 export function useLevelingData() {
-  const { data, loading, error } = useDataFetch('/api/leveling');
+  const { data, loading, error } = useDataFetch('/leveling');
 
   return { 
     rows: data, 
@@ -173,8 +173,8 @@ export function useLevelingData() {
 export function useSOData(months = null) {
   const monthsParam = months ? months.join(',') : null;
   const endpoint = monthsParam 
-    ? `/api/so-data?months=${encodeURIComponent(monthsParam)}`
-    : '/api/so-data';
+    ? `/so-data?months=${encodeURIComponent(monthsParam)}`
+    : '/so-data';
   
   const { data, loading, error } = useDataFetch(endpoint);
 
@@ -193,8 +193,8 @@ export function useSOData(months = null) {
 export function useRawSOData(months = null) {
   const monthsParam = months ? months.join(',') : null;
   const endpoint = monthsParam 
-    ? `/api/so-data/raw?months=${encodeURIComponent(monthsParam)}`
-    : '/api/so-data/raw';
+    ? `/so-data/raw?months=${encodeURIComponent(monthsParam)}`
+    : '/so-data/raw';
   
   // Untuk raw SO data, matikan cache agar selalu pakai data terbaru
   const { data, loading, error } = useDataFetch(endpoint, { useCache: false });
@@ -212,7 +212,7 @@ export function useRawSOData(months = null) {
  * Data sudah di-aggregate di backend dengan normalisasi area_group
  */
 export function useCustomerIntelligenceData() {
-  const endpoint = '/api/so-data/customer-intelligence';
+  const endpoint = '/so-data/customer-intelligence';
   
   const { data, loading, error } = useDataFetch(endpoint, { useCache: false });
 
@@ -229,7 +229,7 @@ export function useCustomerIntelligenceData() {
  * Returns matrix of engineer-customer pairs with SO counts and coverage stats
  */
 export function useEngineerCustomerRelationships() {
-  const endpoint = '/api/so-data/engineer-customer-relationships';
+  const endpoint = '/so-data/engineer-customer-relationships';
   
   const { data, loading, error } = useDataFetch(endpoint, { useCache: false });
 

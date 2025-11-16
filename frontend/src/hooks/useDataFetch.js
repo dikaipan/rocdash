@@ -4,6 +4,7 @@
  * Includes global cache to prevent unnecessary re-fetching on navigation
  */
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { API_BASE_URL } from '../utils/apiConfig';
 
 // Check for scheduler.postTask availability (better priority management)
 const hasPostTask = typeof scheduler !== 'undefined' && scheduler.postTask;
@@ -131,7 +132,11 @@ export function useDataFetch(endpoint, options = {}) {
         }
         setError(null);
         
-        const response = await fetch(endpoint);
+        const url = endpoint.startsWith('http')
+          ? endpoint
+          : `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+
+        const response = await fetch(url);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
